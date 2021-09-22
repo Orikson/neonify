@@ -8,6 +8,7 @@ Notes: Code adapted from the flask tutorial [found at https://flask.palletsproje
 
 import os
 from flask import Flask
+from flask import render_template
 
 def create_app(test_config=None):
     # create and configure the app
@@ -32,9 +33,9 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/')
+    def canvas():
+        return render_template('canvas.html')
 
     from . import db
     db.init_app(app)
