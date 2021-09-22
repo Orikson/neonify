@@ -1,0 +1,28 @@
+<!-- 
+    Author: Eron Ristich
+    Date: 9/21/21
+    File: ./neonify/templates/canvas.html
+    Description: Create template for drawing canvas
+ -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    <link href="canvas.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+
+    <div>Drawing Test</div>
+    <div class="container" style="display: flex;">
+      <canvas id="drawingCanvas" width=500px height=500px onmousedown="pendown(event)" onmouseup="penup()">
+        
+      </canvas>
+      <input id="weight" min="1" type="range" orient="vertical"/>
+      <input type="color" id="colorpicker" value="#000000"/>
+    </div>
+
+    <script src="canvas.js"></script>
+  </body>
+</html>
