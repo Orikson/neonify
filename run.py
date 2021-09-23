@@ -1,3 +1,10 @@
+"""
+    Author: Eron Ristich
+    Date: 9/21/21
+    File: ./run.py
+    Description: Run the application factory
+"""
+
 from dotenv import load_dotenv
 load_dotenv()
 

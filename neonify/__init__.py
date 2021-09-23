@@ -1,9 +1,9 @@
 """
-Author: Eron Ristich
-Date: 9/21/21
-File: ./neonify/__init__.py
-Description: Initialize the application factory
-Notes: Code adapted from the flask tutorial [found at https://flask.palletsprojects.com/en/2.0.x/tutorial/]
+    Author: Eron Ristich
+    Date: 9/21/21
+    File: ./neonify/__init__.py
+    Description: Initialize the application factory
+    Notes: Code adapted from the flask tutorial [found at https://flask.palletsprojects.com/en/2.0.x/tutorial/]
 """
 
 import os
