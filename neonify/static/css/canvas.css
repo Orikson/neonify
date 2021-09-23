@@ -8,15 +8,22 @@
 #drawingCanvas {
     border: 1px dotted #000000;
 }
+
+#canvasImg {
+    float: left;
+    padding: 50px;
+}
   
 #weight {
     float: left;
+    padding: 50px;
 }
   
 #colorpicker {
     float: left;
     width: 20px;
     height: 175px;
+    padding: 50px;
 }
   
 input[type=range][orient=vertical] {

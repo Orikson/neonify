@@ -7,7 +7,7 @@
 
 // CONSTANTS
 // constant scalar for drawing canvas
-const scalar = 2;
+const scalar = 4;
 
 // constant drawingCanvas element
 const element = document.getElementById("drawingCanvas");
@@ -15,9 +15,14 @@ const element = document.getElementById("drawingCanvas");
 // constant drawingCanvas context
 const ctx = setupCanvas(element); 
 
+// set background to black
+ctx.fillStyle = "black";
+ctx.fillRect(0, 0, element.width, element.height);
+
 // constant stroke weight slider element initialized to 5 
 const weight = document.getElementById("weight");
 weight.value = 5*scalar;
+weight.min = 2*scalar;
 
 // constant color picker element
 const colors = document.getElementById("colorpicker");
@@ -41,6 +46,33 @@ function setupCanvas(canvas) {
   ctx.scale(scalar, scalar);
   
   return ctx;
+}
+
+// keycode catcher for ctrl+z
+function KeyPress(e) {
+  var k = window.event? event : e
+  if (k.keyCode == 90 && k.ctrlKey) alert("Ctrl+z");
+  if (k.keyCode == 89 && k.ctrlKey) alert("Ctrl+y");
+}
+document.onkeydown = KeyPress;
+
+// save canvas to image
+function saveCanvas(canvas) {
+  var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+
+  window.location.href=image;
+}
+function saveDCanvas() {
+  saveCanvas(element);
+}
+
+// locally download canvas
+function previewCanvas(canvas) {
+  dataURL = canvas.toDataURL();
+  document.getElementById('canvasImg').src = dataURL;
+}
+function previewDCanvas() {
+  previewCanvas(element);
 }
 
 // SMOOTHING FUNCTIONS

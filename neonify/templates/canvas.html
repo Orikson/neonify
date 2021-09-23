@@ -16,10 +16,16 @@
     <div>Drawing Test</div>
     <div class="container" style="display: flex;">
       <canvas id="drawingCanvas" width="1000" height="1000" style="width: 500px; height: 500px;"></canvas>
-        
-      </canvas>
+
       <input id="weight" min="1" type="range" orient="vertical"/>
-      <input type="color" id="colorpicker" value="#000000"/>
+      <input type="color" id="colorpicker" value="#ffffff"/>
+
+      <img id="canvasImg" style="width: 500px; height: 500px;">
+    </div>
+    
+    <div id="imageHandlers">
+      <button onclick="saveDCanvas()">Save as Image</button>
+      <button onclick="previewDCanvas()">Preview</button>
     </div>
 
     <script src="/static/javascript/canvas.js"></script>
