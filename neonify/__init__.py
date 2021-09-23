@@ -35,7 +35,8 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/')
     def canvas():
-        return render_template('canvas.html')
+        #return render_template('canvas.html')
+        return render_template('testing.html')
 
     from . import db
     db.init_app(app)
