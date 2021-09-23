@@ -6,12 +6,18 @@
 */
 
 // CONSTANTS
+// constant scalar for drawing canvas
+const scalar = 2;
+
 // constant drawingCanvas element
-const element = document.getElementById("drawingCanvas")
+const element = document.getElementById("drawingCanvas");
+
+// constant drawingCanvas context
+const ctx = setupCanvas(element); 
 
 // constant stroke weight slider element initialized to 5 
 const weight = document.getElementById("weight");
-weight.value = "5";
+weight.value = 5*scalar;
 
 // constant color picker element
 const colors = document.getElementById("colorpicker");
@@ -22,6 +28,19 @@ const colors = document.getElementById("colorpicker");
 // actually assorts arrays into dictionaries, but it's functionally the same
 var arrayDeepcopy = function(array) {
   return (array.map(a => {return {...a}}));
+}
+
+// canvas setup
+function setupCanvas(canvas) {
+  var rect = canvas.getBoundingClientRect();
+  
+  canvas.width = rect.width * scalar;
+  canvas.height = rect.height * scalar;
+  
+  var ctx = canvas.getContext('2d');
+  ctx.scale(scalar, scalar);
+  
+  return ctx;
 }
 
 // SMOOTHING FUNCTIONS
@@ -115,8 +134,7 @@ var polynomialPudding2D = function(points, n) {
 
 // PEN FUNCTIONS
 // draw a point
-var drawPoint = function(canvas, x, y, w, color) {
-  var ctx = canvas.getContext("2d");
+var drawPoint = function(ctx, x, y, w, color) {
   ctx.beginPath();
 
   ctx.arc(x, y, w / 2, 0, 2 * Math.PI);
@@ -126,8 +144,7 @@ var drawPoint = function(canvas, x, y, w, color) {
 }
 
 // draw a line (with curved endpoints)
-var drawLine = function(canvas, x1, y1, x2, y2, w, color) {
-  var ctx = canvas.getContext("2d");
+var drawLine = function(ctx, x1, y1, x2, y2, w, color) {
   ctx.beginPath();
 
   ctx.moveTo(x1, y1);
@@ -137,8 +154,8 @@ var drawLine = function(canvas, x1, y1, x2, y2, w, color) {
 
   ctx.stroke();
 
-  drawPoint(canvas, x1, y1, w, color);
-  drawPoint(canvas, x2, y2, w, color);
+  drawPoint(ctx, x1, y1, w, color);
+  drawPoint(ctx, x2, y2, w, color);
 }
 
 
@@ -186,6 +203,7 @@ class Points {
     this.canvas = details["l"];
     this.weight = details["w"];
     this.colors = details["c"];
+    this.ctx = details["x"];
 
     // storage for extra information to be passed and handled by functions such as moving average previous values
     this.extras = {"ma": {"x": -1, "y": -1}};
@@ -200,7 +218,8 @@ class Points {
     if (this.points.length > 1) {
       var p1 = this.points[this.points.length-1];
       var p2 = this.points[this.points.length-2];
-      drawLine(this.canvas, p1[0], p1[1], p2[0], p2[1], this.weight.value, this.colors.value);
+
+      drawLine(this.ctx, p1[0], p1[1], p2[0], p2[1], this.weight.value, this.colors.value);
     }
   }
 
@@ -222,7 +241,7 @@ var getEventCoords = function(event) {
 }
 
 // all event functions require the three parameters "details" and "event" and "points"
-// details is defined as a dictionary {l: canvas, w: weight, c: colors}
+// details is defined as a dictionary {l: canvas, w: weight, c: colors, x: context}
 
 // on mouse down function
 var onMouseDown = function(details, event, points) {
@@ -233,9 +252,10 @@ var onMouseDown = function(details, event, points) {
   var canvas = details["l"];
   var weight = details["w"];
   var colors = details["c"];
+  var ctx = details["x"];
 
   // draw a point
-  drawPoint(canvas, x, y, weight.value, colors.value)
+  drawPoint(ctx, x, y, weight.value, colors.value)
 
   // initialize moving average
   points.extras["ma"]["x"] = x;
@@ -247,10 +267,6 @@ var onMouseDown = function(details, event, points) {
 // on mouse moved function
 var onMouseMoved = function(details, event, points) {
   var coord = getEventCoords(event);
-
-  var canvas = details["l"];
-  var weight = details["w"];
-  var colors = details["c"];
   
   points.extras["ma"] = movingAverage(coord, points.extras["ma"]);
   var x = points.extras["ma"]["x"];
@@ -274,8 +290,8 @@ var onMouseUp = function(details, event, points) {
 }
 
 var main = function() {
-  var details = { "l": element, "w": weight, "c": colors };
-  var pointSpace = new Points(10, details);
+  var details = { "l": element, "w": weight, "c": colors, "x": ctx };
+  var pointSpace = new Points(3, details);
 
   // for nonexistent functions (mousedown/mousemoved/mouseup), use void instead
   defineListeners(
