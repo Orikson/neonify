@@ -17,19 +17,17 @@
 
 #canvasImg {
     float: left;
-    padding: 50px;
 }
   
 #weight {
     float: left;
-    padding: 50px;
+    padding: 10px;
 }
   
 #colorpicker {
     float: left;
     width: 20px;
     height: 175px;
-    padding: 50px;
 }
   
 input[type=range][orient=vertical] {

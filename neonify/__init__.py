@@ -7,8 +7,7 @@
 """
 
 import os
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template, jsonify, request
 
 def create_app(test_config=None):
     # create and configure the app
@@ -32,12 +31,15 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
     @app.route('/')
     def canvas():
-        #return render_template('canvas.html')
-        return render_template('testing.html')
+        return render_template('canvas.html')
+        #return render_template('testing.html')
 
+    @app.route('/_neonify')
+    def neonify():
+        return jsonify(response="neonified")
+    
     from . import db
     db.init_app(app)
 

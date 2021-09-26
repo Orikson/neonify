@@ -11,9 +11,13 @@
     <meta name="viewport" content="width=device-width">
     <title>neonify</title>
     <link href="/static/css/canvas.css" rel="stylesheet" type="text/css"/>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+    <script> $SCRIPT_ROOT = {{ request.script_root|tojson }}; </script> 
   </head>
   <body>
-    <div>Drawing Test</div>
+    <h1>Drawing Test</h1>
     <div class="container" style="display: flex;">
       <canvas id="drawingCanvas" width="1000" height="1000" style="width: 500px; height: 500px;"></canvas>
 
@@ -29,8 +33,12 @@
     <div id="imageHandlers">
       <button onclick="saveDCanvas()">Save as Image</button>
       <button onclick="previewDCanvas()">Preview</button>
+      <button id="neonify" type="submit">Neonify</button>
+      
     </div>
+    <span id="neonified">?</span>
 
     <script src="/static/javascript/canvas.js"></script>
+    <script src="/static/javascript/responses.js"></script>
   </body>
 </html>
