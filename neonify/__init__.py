@@ -7,7 +7,14 @@
 """
 
 import os
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_file
+import base64
+import tempfile
+from neonify import neonify
+from io import BytesIO
+
+
+UPLOAD_FOLDER = "static/uploads/"
 
 def create_app(test_config=None):
     # create and configure the app
@@ -17,6 +24,8 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'neonify.sqlite'),
     )
+
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -36,9 +45,32 @@ def create_app(test_config=None):
         return render_template('canvas.html')
         #return render_template('testing.html')
 
-    @app.route('/_neonify')
-    def neonify():
-        return jsonify(response="neonified")
+    @app.route('/_neonify', methods=['GET', 'POST'])
+    def neonifyit():
+        img_response = request.values['imageBase64']
+        #print(img_response)
+
+        img_data = str.encode(img_response.split(',')[1])
+        
+        temp = tempfile.NamedTemporaryFile()
+        temp.write(base64.decodebytes(img_data))
+        temp.seek(0)
+        
+        img_file = BytesIO(temp.read())
+        temp.close()
+        img_file.seek(0)
+        #print(base64.b64encode(img_file.getvalue()).decode())
+        #img_file.seek(0)
+
+        neonified = neonify.neon(img_file)
+        
+        img_io = BytesIO()
+        neonified.save(img_io, 'PNG')
+        img_io.seek(0)
+        
+        img_final = 'data:image/png;base64,' + base64.b64encode(img_io.getvalue()).decode()
+
+        return jsonify(img=img_final)
     
     from . import db
     db.init_app(app)

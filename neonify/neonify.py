@@ -8,8 +8,8 @@
 from PIL import Image
 
 
-def neonify(file):
-    image = Image.open(r'' + file)
+def neon(file):
+    image = Image.open(file)
     pixel = image.load()
 
     # works on black and white images only
@@ -24,7 +24,6 @@ def neonify(file):
                 image.putpixel((i,j), (255, 255, 255, 255))
             else:
                 image.putpixel((i,j), (0,0,0,0))
-
 
     # n defines the distance from white pixels that will be filled
     n = 30
@@ -53,23 +52,22 @@ def neonify(file):
                 if pixel[i,j-1] == (0, 0, 0, 0) and j-1 > 0:
                     image.putpixel((i,j-1), (255, 255, 255, int(gen[1])))
                     lastgen.append((i,j-1))
-                
 
     for i in range(2,n):
         # iterate through all pixels (find the white ones)
         newgen = []
         for j in lastgen:
             x,y = j
-            if pixel[x,y+1] == (0, 0, 0, 0) and y+1 < image.size[1]:
+            if y+1 < image.size[1] and pixel[x,y+1] == (0, 0, 0, 0):
                 image.putpixel((x,y+1), (255, 255, 255, int(gen[i])))
                 newgen.append((x,y+1))
-            if pixel[x,y-1] == (0, 0, 0, 0) and y-1 > 0:
+            if  y-1 > 0 and pixel[x,y-1] == (0, 0, 0, 0):
                 image.putpixel((x,y-1), (255, 255, 255, int(gen[i])))
                 newgen.append((x,y-1))
-            if pixel[x+1,y] == (0, 0, 0, 0) and x+1 < image.size[0]:
+            if x+1 < image.size[0] and pixel[x+1,y] == (0, 0, 0, 0):
                 image.putpixel((x+1,y), (255, 255, 255, int(gen[i])))
                 newgen.append((x+1,y))
-            if pixel[x-1,y] == (0, 0, 0, 0) and x-1 > 0:
+            if x-1 > 0 and pixel[x-1,y] == (0, 0, 0, 0):
                 image.putpixel((x-1,y), (255, 255, 255, int(gen[i])))
                 newgen.append((x-1,y))    
 
@@ -133,5 +131,4 @@ def neonify(file):
         r,g,b,a = pixel[i[0][0],i[0][1]]
         image.putpixel(i[0], i[1])
 
-
-    image.save('result.png')
+    return image

@@ -7,7 +7,7 @@
 
 // CONSTANTS
 // constant scalar for drawing canvas
-const scalar = 4;
+const scalar = 1;
 
 // constant drawingCanvas element
 const element = document.getElementById("drawingCanvas");
@@ -73,6 +73,20 @@ function previewCanvas(canvas) {
 }
 function previewDCanvas() {
   previewCanvas(element);
+}
+
+//serverside download canvas
+function downloadCanvas(canvas, url) {
+  dataURL = canvas.toDataURL();
+  $.ajax({
+    type: "POST",
+    url: url,
+    data:{
+      imageBase64: dataURL
+    }
+  }).done(function() {
+    console.log('sent');
+  });
 }
 
 // SMOOTHING FUNCTIONS

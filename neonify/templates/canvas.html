@@ -33,10 +33,10 @@
     <div id="imageHandlers">
       <button onclick="saveDCanvas()">Save as Image</button>
       <button onclick="previewDCanvas()">Preview</button>
-      <button id="neonify" type="submit" onclick="previewDCanvas()">Neonify</button>
-      
+      <button id="neonify">Neonify</button>
+      <span id="neonified">Status: Waiting</span>
     </div>
-    <span id="neonified">?</span>
+    <img id="result" style="width: 500px; height: 500px;">
 
     <script src="/static/javascript/canvas.js"></script>
     <script src="/static/javascript/responses.js"></script>
